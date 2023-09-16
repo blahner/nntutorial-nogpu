@@ -1,0 +1,18 @@
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore Node.js modules
+node_modules/
+
+# Ignore Python virtual environment
+venv/
+
+# Ignore some folders for this project
+resources/
+
+# Add more patterns as needed
+*.csv
+*.png
+*.svg
+*.pkl
+*.pdf
