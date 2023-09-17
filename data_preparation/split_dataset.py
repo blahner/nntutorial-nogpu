@@ -2,7 +2,7 @@ import numpy as np
 
 if __name__ == '__main__':
     #split the 60,000 training images into train and val sets and save
-    data_path = "/mnt/g/nntutorial_copy/data/"
+    data_path = "/your/project/path/data/"
     train_split = 0.8
     val_split = 1 - train_split
     train_val_data = np.loadtxt(data_path + "mnist_train_val.csv", delimiter=",")

@@ -1,6 +1,11 @@
-import numpy as np
+import os
+
 import matplotlib.pyplot as plt
+import numpy as np
+import torch
+
 from .transforms import InverseNormalize
+
 
 def factor(num):
     """
@@ -87,7 +92,7 @@ def visualize_convweights(model, cnnlayer, save_path=None):
     fs = 20 #fontsize for plots
     #weights are shape: (out_channels, groups/in_channels, kernel_size[0], kernel_size[1])
     
-    weight_values = eval('model.conv' + str(cnnlayer) + '[0].weight.detach().cpu().numpy()') # shape [out_ch, in_ch, k_h, k_w]
+    weight_values = eval('model.CNN' + str(cnnlayer) + '[0].weight.detach().cpu().numpy()') # shape [out_ch, in_ch, k_h, k_w]
     #for out_channel in weight_values.shape
     out_ch, in_ch, k_h, k_w = weight_values.shape
     #rows_subplot = int(np.floor(np.sqrt(out_ch)))
@@ -112,7 +117,7 @@ def visualize_convweights(model, cnnlayer, save_path=None):
     plt.show()
     plt.clf()
 
-def visualize_activations(activation_values, save_path=None):
+def visualize_activations(activation_values, img_idx=0, save_path=None):
     """
     Visualize the activations of an image as it gets passed through the network.
     Note how the activations change depending on whether the network is trained
@@ -122,10 +127,6 @@ def visualize_activations(activation_values, save_path=None):
     ----------
     activation_values : Dictionary
         Dictionary of activation values for each image at each layer in the model.
-        Be conscious of the 'activation_values' that you pass in here. If using
-        the recommended method 'model.get_activations()', the activations are 
-        from the most recent pass of images through the model. It could be training,
-        validation, or test.
     save_path: string, optional
         Filepath, including filename, to where you want to save the resulting plot. If not
         specified, the plot will not save.
@@ -135,26 +136,21 @@ def visualize_activations(activation_values, save_path=None):
     None.
 
     """
-    #numLayers = len(layers)
     for key in activation_values.keys():
-        act = activation_values[key]
-    #for lay in np.arange(0,2*numLayers,2): #every two because our network alternates Linear Layer --> Activation
-        #key = list(activation_values.keys())[lay]
-        #act = activation_values[key].detach().cpu().numpy()
+        act = activation_values[key][img_idx].detach().cpu().numpy().squeeze()
         shape = act.shape[0]
         if shape == 10: #output layer
             best_factor = (1,10)
         else:
-            factors_list = factor(act.shape[0])
+            factors_list = factor(shape)
             best_factor = factors_list[-1] #factors x1 and x2 that are closest to squares
         r = best_factor[0]
         c = best_factor[1]
-        print("Activation plot is " + str(r) + " pixels by " + str(c) + " pixels.")
         act_reshape = act.reshape((r,c))
         plt.imshow(act_reshape)
         if shape == 10:
             for j in np.arange(10):
-                plt.text(j, 0, round(act_reshape[0,j].item(),2), ha="center", va="center", color="k")
+                plt.text(j, 0, round(act_reshape[0,j],2), ha="center", va="center", color="k")
             plt.xticks(ticks = np.arange(10), labels = np.arange(10))
             plt.yticks(ticks=[])
             plt.title("MNIST Digit Confidence")

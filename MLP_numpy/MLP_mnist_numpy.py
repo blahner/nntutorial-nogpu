@@ -158,7 +158,7 @@ def inference(model, dataloader, criterion):
 
 if __name__ == '__main__':
     #Define our paths
-    root = os.path.join("/mnt","g", "nntutorial_copy") #os.path.join("/home","blahner","projects","nntutorial")
+    root = os.path.join("/home","blahner","projects","nntutorial")
     data_root = os.path.join(root, "data") #path to MNIST data
     save_root = os.path.join(root, "MLP_numpy", "output") #to save figures and other output
 
@@ -180,7 +180,7 @@ if __name__ == '__main__':
     print("Number of Validation Images:", len(dataset_val))
     print("Number of Testing Images:", len(dataset_test))
 
-    dataloader_train = mnist_numpy_dataloader(dataset_train, batch_sz=16)
+    dataloader_train = mnist_numpy_dataloader(dataset_train, batch_sz=16, shuffle=True)
     dataloader_val = mnist_numpy_dataloader(dataset_val, batch_sz=16, shuffle=False)
     dataloader_test = mnist_numpy_dataloader(dataset_test, batch_sz=1, shuffle=False)
 

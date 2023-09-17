@@ -5,20 +5,23 @@ Created on Fri Sep 24 16:23:25 2021
 
 @author: blahner
 """
-import numpy as np
-import matplotlib.pyplot as plt
 import copy
+import os
+
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import transforms
-import os
 from torch.utils.data import DataLoader
+from torchvision import transforms
+from torchvision.models.feature_extraction import create_feature_extractor, get_graph_node_names
+
 #below are local imports. We could have defined everything in one script, but the code would have been lengthy and hard to read
-from model.architectures import CNN_pytorch #imports the MLP class we define in Step #3
-from utils.helper import visualize_activations, visualize_convweights, plot_sample_imgs
-from utils.dataset import cnn_pytorch_dataset #import our custom dataset class
-from utils.transforms import ToTensor3D, Normalize
+from model.architectures import CNN_pytorch  # imports the MLP class we define in Step #3
+from utils.dataset import cnn_pytorch_dataset  # import our custom dataset class
+from utils.helper import plot_sample_imgs, visualize_activations, visualize_convweights, extract_features
+from utils.transforms import Normalize, ToTensor3D
 
 def train(model, dataloaders, criterion, optimizer, device, epochs=3):
     """
@@ -178,7 +181,6 @@ def inference(model, dataloader, criterion, device):
     print("Inference Loss: {:4f} Acc: {:.4f}".format(inference_loss, inference_acc))
     return inference_loss, inference_acc
 
-
 if __name__ == '__main__':
     #########################
     #STEP 0: Check to see if we have a GPU to use. It's ok if not! 
@@ -194,7 +196,7 @@ if __name__ == '__main__':
     #Define our paths
     root = os.path.join("/home","blahner","projects","nntutorial")
     data_root = os.path.join(root, "data") #path to MNIST data
-    save_root = os.path.join(root, "MLP_pytorch", "output") #to save figures and other output
+    save_root = os.path.join(root, "CNN_pytorch", "output") #to save figures and other output
 
     #make the folder to save output if it doesn't exist already
     if not os.path.exists(save_root):
@@ -217,7 +219,7 @@ if __name__ == '__main__':
 
     dataloader_train = DataLoader(dataset_train, batch_size=16, shuffle=True, num_workers=1)
     dataloader_val = DataLoader(dataset_val, batch_size=16, shuffle=False, num_workers=1)
-    dataloader_test = DataLoader(dataset_test, batch_size=2, shuffle=False, num_workers=1)
+    dataloader_test = DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers=1)
 
     dataloaders = {'train': dataloader_train, 'val': dataloader_val}
 
@@ -225,7 +227,7 @@ if __name__ == '__main__':
     #STEP 2: Define the MLP model, criterion, and optimizer
     model = CNN_pytorch().to(device) #initialize your MLP model and put it on device
     print(model)
-    
+
     criterion = nn.CrossEntropyLoss() #nn.MSELoss() 
     optimizer = optim.Adam(model.parameters(), lr = 0.5)
     
@@ -233,31 +235,49 @@ if __name__ == '__main__':
     #STEP 3: let's examine the model's accuracy, weights, and image activations before any training happens
     print("Model Performance Before Training")
     inference_loss, inference_acc = inference(model, dataloader_test, criterion, device) #pass the testing set through the network
-    visualize_convweights(model, 1, save_path=os.path.join(save_root, "modelweights_training-before")) #Do you see any structure in these weights?
-    # get activations from a sample
-    activations_all = {} #stores the intermediate activations for each registered layer in this dictionary
-    def get_activation(name):
-        def hook(model, input, output):
-            activations_all[name] = output[0].detach().cpu().numpy()
-        return hook
-   
-    interested_layers = ["CNN.1","CNN.4","fc1"] #layers I want the activations from. After the two relus and after the fully connected
-    handles = []
-    for name, module in model.named_modules():
-        if name in interested_layers:
-            handle = module.register_forward_hook(get_activation(name))
-            handles.append(handle) #to later remove the hooks
+    nodes = get_graph_node_names(model) #list of model layers or nodes
 
-    sample = dataset_test[7] #grab any arbitrary sample from the dataset to get the activations from
-    x = sample["image"].to(device) #put the image on the proper device so we can pass it through layers of the network again
-    x = x.unsqueeze(dim=0) #add another dimension to mimic a batch size of 1
-    activations_all["input"] = x.detach().cpu().numpy() #keep the pure input
-    model(x) 
+    #visualize_convweights(model, 1, save_path=os.path.join(save_root, "modelweights_training-before")) #Do you see any structure in these weights?
+
+    # get activations from a sample
+    interested_layers = ["x","CNN.0","CNN.1","CNN.2","CNN.3","CNN.4","CNN.5","fc1"] #layers I want the activations from. Must be in "nodes"
+    feature_extractor = create_feature_extractor(model, return_nodes=interested_layers) #the term "feature" and "activation" is interchangeable here
+    activations = {key: [] for key in interested_layers}
+    for d in dataloader_test:
+        # Extract features
+        ft = feature_extractor(d['image'].to(device))
+        for layer in interested_layers:
+            # Flatten the features
+            activations[layer].append(torch.flatten(ft[layer], start_dim=1))
+
+
+    #activations = extract_features(feature_extractor, dataloader_test, device) #get activations for all images in the dataloader at all specified layers
+
+    visualize_activations(activations, img_idx=0, save_path=os.path.join(save_root, "modelactivations_training-before"))
+    
+    #activations_all = {} #stores the intermediate activations for each registered layer in this dictionary
+    #def get_activation(name):
+    #    def hook(model, input, output):
+    #        activations_all[name] = output[0].detach().cpu().numpy()
+    #    return hook
+   
+    #interested_layers = ["CNN.1","CNN.4","fc1"] #layers I want the activations from. After the two relus and after the fully connected
+    #handles = []
+    #for name, module in model.named_modules():
+    #    if name in interested_layers:
+    #        handle = module.register_forward_hook(get_activation(name))
+    #        handles.append(handle) #to later remove the hooks
+
+    #sample = dataset_test[7] #grab any arbitrary sample from the dataset to get the activations from
+    #x = sample["image"].to(device) #put the image on the proper device so we can pass it through layers of the network again
+    #x = x.unsqueeze(dim=0) #add another dimension to mimic a batch size of 1
+    #activations_all["input"] = x.detach().cpu().numpy() #keep the pure input
+    #model(x) 
     #visualize_activations()
     #remove hooks
-    for h in handles:
-        h.remove()
-    del handles
+    #for h in handles:
+    #    h.remove()
+    #del handles
     #########################
     #STEP 4: Train the model! Most of the code's runtime will be spent here.
     val_acc, train_acc, val_loss, train_loss = train(model, dataloaders, criterion, optimizer, device, epochs=3)
@@ -265,7 +285,7 @@ if __name__ == '__main__':
     #Plot the training and validation accuracy and loss. Essential for debugging your network
     #plot training and validation cost resutls
     plt.plot(train_loss), plt.plot(val_loss)
-    plt.ylabel("MSE Loss"), plt.xlabel("Epoch"), plt.ylim(bottom=0)
+    plt.ylabel("Loss"), plt.xlabel("Epoch"), plt.ylim(bottom=0)
     plt.title("MLP Training Loss Curves")
     plt.legend(["Training","Validation"])
     plt.savefig(os.path.join(save_root, "training_loss_curves.png"))

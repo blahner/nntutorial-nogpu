@@ -3,19 +3,21 @@
 """
 @author: benjamin lahner
 """
-import matplotlib.pyplot as plt
 import copy
+import os
+
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import transforms
 from torch.utils.data import DataLoader
+from torchvision import transforms
+
 #below are local imports. We could have defined everything in one script, but the code would have been lengthy and hard to read
-from model.architectures import MLP_pytorch #imports the MLP class we define in Step #3
-from utils.helper import visualize_activations, visualize_weights, plot_sample_imgs
-from utils.dataset import mnist_pytorch_dataset #import our custom dataset class
-from utils.transforms import ToTensor1D, Normalize
-import os
+from model.architectures import MLP_pytorch  # imports the MLP class we define in Step #3
+from utils.dataset import mnist_pytorch_dataset  # import our custom dataset class
+from utils.helper import plot_sample_imgs, visualize_activations, visualize_weights
+from utils.transforms import Normalize, ToTensor1D
 
 def train(model, dataloaders, criterion, optimizer, device, epochs=3):
     """
@@ -173,7 +175,6 @@ def inference(model, dataloader, criterion, device):
     
     print("Inference Loss: {:4f} Acc: {:.4f}".format(inference_loss, inference_acc))
     return inference_loss, inference_acc
-
 
 if __name__ == '__main__':
 

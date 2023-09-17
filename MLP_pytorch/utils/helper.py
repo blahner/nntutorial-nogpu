@@ -141,7 +141,6 @@ def visualize_activations(activation_values, save_path=None):
             best_factor = factors_list[-1] #factors x1 and x2 that are closest to squares
         r = best_factor[0]
         c = best_factor[1]
-        print("Activation plot is " + str(r) + " pixels by " + str(c) + " pixels.")
         act_reshape = act.reshape((r,c))
         plt.imshow(act_reshape)
         if shape == 10:
