@@ -231,7 +231,7 @@ if __name__ == '__main__':
     #to this "optim.SGD" class to tell it how each one should be updated. SGD, or Stochastic Gradient Descent, is 
     #mathematically the most straightforward, commonly used, and the one explained in depth in this tutorial. Other
     #optimizers, like Adam, are similar (still gradient based), but add a bit more functionality useful for large networks. 
-    optimizer = optim.SGD(model.parameters(), lr=0.5) 
+    optimizer = optim.SGD(model.parameters(), lr=5) 
 
     #########################
     #STEP 3: let's examine the model's accuracy, weights, and image activations before any training happens
@@ -241,7 +241,7 @@ if __name__ == '__main__':
     
     # get activations from a sample
     feature_extractor_all_layers = list(model.children())[0] #gets all the layers of the network (children)
-    sample = dataset_test[5] #grab any arbitrary sample from the dataset to get the activations from
+    sample = dataset_test[0] #grab any arbitrary sample from the dataset to get the activations from
     x = sample["image"].to(device) #put the image on the proper device so we can pass it through layers of the network again
     activations = {} #stores the activations
     activations["Layer0"] = x.detach().cpu().numpy() #start with the pure image
@@ -255,7 +255,7 @@ if __name__ == '__main__':
 
     #########################
     #STEP 4: Train the model! Most of the code's runtime will be spent here.
-    val_acc, train_acc, val_loss, train_loss = train(model, dataloaders, criterion, optimizer, device, epochs=3)
+    val_acc, train_acc, val_loss, train_loss = train(model, dataloaders, criterion, optimizer, device, epochs=10)
     
     #Plot the training and validation accuracy and loss. Essential for debugging your network
     #plot training and validation cost resutls
@@ -285,7 +285,7 @@ if __name__ == '__main__':
 
     # get activations from a sample
     feature_extractor_all_layers = list(model.children())[0] #gets all the layers of the network (children)
-    sample = dataset_test[5] #grab any arbitrary sample from the dataset to get the activations from
+    sample = dataset_test[0] #grab any arbitrary sample from the dataset to get the activations from
     x = sample["image"].to(device) #put the image on the proper device so we can pass it through layers of the network again
     activations = {} #stores the activations
     activations["Layer0"] = x.detach().cpu().numpy() #start with the pure image
