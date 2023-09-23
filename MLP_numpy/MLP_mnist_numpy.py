@@ -212,7 +212,7 @@ if __name__ == '__main__':
 
     #########################
     #STEP 4: Train the model! Most of the code's runtime will be spent here.
-    train_loss, train_acc, val_loss, val_acc = train(model, dataloaders, criterion, learning_rate=0.5, epochs=3)
+    train_loss, train_acc, val_loss, val_acc = train(model, dataloaders, criterion, learning_rate=0.5, epochs=10)
 
     #Plot the training and validation accuracy and loss. Essential for debugging your network
     #plot training and validation cost resutls
@@ -265,7 +265,7 @@ if __name__ == '__main__':
     #Visualize the confidence of the model's classification. Does the model's
     #lack of confidence make sense based on the image? 
     visualize_activations(activations, layers=[len(layer_sz)-1], 
-                        image_idx = difficult_img_idx, save_path=os.path.join(save_root, "modelactivations_difficultimg"))
+                        image_idx=difficult_img_idx, save_path=os.path.join(save_root, "modelactivations_difficultimg"))
 
     #########################
     """

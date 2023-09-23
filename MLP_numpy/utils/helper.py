@@ -57,7 +57,9 @@ def plot_sample_imgs(dataset, save_path=None):
             ax[r,c].imshow(img, cmap="Greys")
             label, = np.where(label == 1)
             ax[r,c].set_title("Label: " + str(label[0]))
-            ax[r,c].axis('off')
+            ax[r,c].axis('on')
+            ax[r,c].tick_params(left = False, right = False , labelleft = False ,
+                labelbottom = False, bottom = False)
     plt.tight_layout()
     if save_path:
         plt.savefig(save_path)
@@ -100,9 +102,11 @@ def visualize_weights(param, layer, save_path=None):
         for j in np.arange(cols_subplot):
             if count < weight_values.shape[0]:
                 val = weight_values[count, :]
-                ax[i,j].imshow(val.reshape(r,c))
+                ax[i,j].imshow(val.reshape(r,c), cmap="Greys")
                 count += 1
-            ax[i,j].axis(False)
+            ax[i,j].axis(True)
+            ax[i,j].tick_params(left = False, right = False , labelleft = False ,
+                labelbottom = False, bottom = False)
     if save_path:
         plt.savefig(save_path)
     plt.show()
@@ -148,14 +152,17 @@ def visualize_activations(activation_values, layers, image_idx=0, save_path=None
         c = best_factor[1]
         act_reshape = act[:,image_idx].reshape((r,c))
         plt.figure
-        plt.imshow(act_reshape)
+        plt.imshow(act_reshape, cmap="Greys")
         if shape == 10:
             for j in np.arange(10):
-                plt.text(j, 0, round(act_reshape[0,j].item(),2), ha="center", va="center", color="k")
+                plt.text(j, 0, round(act_reshape[0,j].item(),2), ha="center", va="center", color="r")
             plt.xticks(ticks = np.arange(10), labels = np.arange(10))
             plt.yticks(ticks=[])
             plt.title("MNIST Digit Confidence")
         else:
+            plt.axis(True)
+            plt.tick_params(left = False, right = False , labelleft = False ,
+                labelbottom = False, bottom = False)
             plt.title("Reshaped Activation of Layer " + str(lay))        
         if save_path:
             plt.savefig(os.path.join(save_path + "_layer-" + str(lay) + ".png"))

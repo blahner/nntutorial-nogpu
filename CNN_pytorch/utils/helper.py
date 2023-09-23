@@ -210,6 +210,9 @@ def visualize_activations(activation_values, img_idx=0, save_path=None):
                 c = best_factor[1]
                 act_reshape = act.reshape((r,c))
                 plt.imshow(act_reshape, cmap="Greys")
+                plt.axis(True)
+                plt.tick_params(left = False, right = False , labelleft = False ,
+                    labelbottom = False, bottom = False)
                 plt.title(f"Activation Visualization of {key}", fontsize=fs)        
             if save_path:
                 plt.savefig(f"{save_path}_{key}.png")

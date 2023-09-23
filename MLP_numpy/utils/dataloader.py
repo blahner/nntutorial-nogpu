@@ -1,7 +1,7 @@
 import numpy as np
 
 class mnist_numpy_dataloader(object):
-    def __init__(self, dataset, batch_sz = 4, shuffle = True):
+    def __init__(self, dataset, batch_sz=4, shuffle=True):
         """
         This initializes our mnist_numpy_datalaoder class. Initialilze some class variables
         to define how we are going to feed in our MNIST images and labels to the network.
