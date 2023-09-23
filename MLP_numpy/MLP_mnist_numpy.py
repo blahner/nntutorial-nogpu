@@ -208,7 +208,7 @@ if __name__ == '__main__':
     inference_loss, inference_acc, activations = inference(model, dataloader_test, criterion) #pass the testing set through the network
     visualize_weights(model.get_parameters(), 1, save_path= os.path.join(save_root,"modelweights_training-before.png")) #Do you see any structure in these weights?
     visualize_activations(activations, layers=list(range(len(layer_sz))), 
-                    image_idx = 5, save_path=os.path.join(save_root,"modelactivations_training-before"))
+                    image_idx=5, save_path=os.path.join(save_root,"modelactivations_training-before"))
 
     #########################
     #STEP 4: Train the model! Most of the code's runtime will be spent here.

@@ -20,7 +20,7 @@ from torchvision.models.feature_extraction import create_feature_extractor, get_
 #below are local imports. We could have defined everything in one script, but the code would have been lengthy and hard to read
 from model.architectures import CNN_pytorch  # imports the MLP class we define in Step #3
 from utils.dataset import cnn_pytorch_dataset  # import our custom dataset class
-from utils.helper import plot_sample_imgs, visualize_activations, visualize_convweights, extract_features
+from utils.helper import plot_sample_imgs, visualize_activations, visualize_weights
 from utils.transforms import Normalize, ToTensor3D
 
 def train(model, dataloaders, criterion, optimizer, device, epochs=3):
@@ -227,9 +227,10 @@ if __name__ == '__main__':
     #STEP 2: Define the MLP model, criterion, and optimizer
     model = CNN_pytorch().to(device) #initialize your MLP model and put it on device
     print(model)
+    print(f"There are {model.count_parameters()} trainable parameters, including biases")
 
     criterion = nn.CrossEntropyLoss() #nn.MSELoss() 
-    optimizer = optim.Adam(model.parameters(), lr = 0.5)
+    optimizer = optim.Adam(model.parameters(), lr = 0.005)
     
     #########################
     #STEP 3: let's examine the model's accuracy, weights, and image activations before any training happens
@@ -237,56 +238,30 @@ if __name__ == '__main__':
     inference_loss, inference_acc = inference(model, dataloader_test, criterion, device) #pass the testing set through the network
     nodes = get_graph_node_names(model) #list of model layers or nodes
 
-    #visualize_convweights(model, 1, save_path=os.path.join(save_root, "modelweights_training-before")) #Do you see any structure in these weights?
+    visualize_weights(model, save_path=os.path.join(save_root, "modelweights_training-before")) #Do you see any structure in these weights?
 
-    # get activations from a sample
-    interested_layers = ["x","CNN.0","CNN.1","CNN.2","CNN.3","CNN.4","CNN.5","fc1"] #layers I want the activations from. Must be in "nodes"
+    # get activations from all samples in the dataloader
+    interested_layers = ["x","CNN.0","CNN.1","CNN.2","CNN.3","CNN.4","CNN.5","fc.0"] #layers I want the activations from. Must be in "nodes"
     feature_extractor = create_feature_extractor(model, return_nodes=interested_layers) #the term "feature" and "activation" is interchangeable here
     activations = {key: [] for key in interested_layers}
     for d in dataloader_test:
         # Extract features
+        assert(d['image'].shape[0] == 1) #the subsequent plotting code assumes a batch size of 1 for the image indexing
         ft = feature_extractor(d['image'].to(device))
         for layer in interested_layers:
             # Flatten the features
-            activations[layer].append(torch.flatten(ft[layer], start_dim=1))
-
-
-    #activations = extract_features(feature_extractor, dataloader_test, device) #get activations for all images in the dataloader at all specified layers
-
+            activations[layer].append(ft[layer]) #if you're using this code as a feature extracture, you probably want to flatten the features
     visualize_activations(activations, img_idx=0, save_path=os.path.join(save_root, "modelactivations_training-before"))
-    
-    #activations_all = {} #stores the intermediate activations for each registered layer in this dictionary
-    #def get_activation(name):
-    #    def hook(model, input, output):
-    #        activations_all[name] = output[0].detach().cpu().numpy()
-    #    return hook
-   
-    #interested_layers = ["CNN.1","CNN.4","fc1"] #layers I want the activations from. After the two relus and after the fully connected
-    #handles = []
-    #for name, module in model.named_modules():
-    #    if name in interested_layers:
-    #        handle = module.register_forward_hook(get_activation(name))
-    #        handles.append(handle) #to later remove the hooks
 
-    #sample = dataset_test[7] #grab any arbitrary sample from the dataset to get the activations from
-    #x = sample["image"].to(device) #put the image on the proper device so we can pass it through layers of the network again
-    #x = x.unsqueeze(dim=0) #add another dimension to mimic a batch size of 1
-    #activations_all["input"] = x.detach().cpu().numpy() #keep the pure input
-    #model(x) 
-    #visualize_activations()
-    #remove hooks
-    #for h in handles:
-    #    h.remove()
-    #del handles
     #########################
     #STEP 4: Train the model! Most of the code's runtime will be spent here.
-    val_acc, train_acc, val_loss, train_loss = train(model, dataloaders, criterion, optimizer, device, epochs=3)
+    val_acc, train_acc, val_loss, train_loss = train(model, dataloaders, criterion, optimizer, device, epochs=10)
     
     #Plot the training and validation accuracy and loss. Essential for debugging your network
     #plot training and validation cost resutls
     plt.plot(train_loss), plt.plot(val_loss)
     plt.ylabel("Loss"), plt.xlabel("Epoch"), plt.ylim(bottom=0)
-    plt.title("MLP Training Loss Curves")
+    plt.title("CNN Training Loss Curves")
     plt.legend(["Training","Validation"])
     plt.savefig(os.path.join(save_root, "training_loss_curves.png"))
     plt.show()
@@ -294,7 +269,7 @@ if __name__ == '__main__':
 
     #plot training and validation accuracy resutls
     plt.plot(range(0,len(train_acc)), train_acc), plt.plot(range(0,len(val_acc)), val_acc)
-    plt.title("MLP Training Accuracy Curves")
+    plt.title("CNN Training Accuracy Curves")
     plt.ylabel("Accuracy"), plt.xlabel("Epoch"), plt.ylim(top=1)
     plt.legend(["Training","Validation"])
     plt.savefig(os.path.join(save_root, "training_acc_curves.png"))
@@ -303,22 +278,20 @@ if __name__ == '__main__':
 
     #########################
     #STEP 5: let's examine the model's accuracy, weights, and image activations after training. See any differences to the before training?
-    
     print("Model Performance After Training")
     inference_loss, inference_acc = inference(model, dataloader_test, criterion, device) #pass the testing set through the network
     #visualize_weights(model, 1, save_path=save_root + "/modelweights_training-after") #Do you see any structure in these weights?
-
-    # get activations from a sample
-    #feature_extractor_all_layers = nn.Sequential(*list(model.children())) #gets all the layers of the network (children)
-    #sample = dataset_test[5] #grab any arbitrary sample from the dataset to get the activations from
-    #x = sample["image"].to(device) #put the image on the proper device so we can pass it through layers of the network again
-    #activations = {} #stores the activations
-    #activations["Layer0"] = x.detach().cpu().numpy() #start with the pure image
-    #for count, extract_layer in enumerate(feature_extractor_all_layers):
-    #    if isinstance(extract_layer, nn.Sigmoid): #we want to see the activations after the sigmoid nonlinearity
-    #        subnet = feature_extractor_all_layers[0:count+1] #define a sub network that contains all layers from the beginning up to the current one
-    #        out = subnet(x) #pass the sample image through the subnet
-    #        activations["Layer" + str(count)] = out.detach().cpu().numpy()
-   
-    #visualize_activations(activations, save_path=save_root + "/modelactivations_training-after") 
-
+    visualize_weights(model, save_path=os.path.join(save_root, "modelweights_training-after")) #Do you see any structure in these weights?
+    
+    # get activations from all samples in the dataloader
+    interested_layers = ["x","CNN.0","CNN.1","CNN.2","CNN.3","CNN.4","CNN.5","fc.0"] #layers I want the activations from. Must be in "nodes"
+    feature_extractor = create_feature_extractor(model, return_nodes=interested_layers) #the term "feature" and "activation" is interchangeable here
+    activations = {key: [] for key in interested_layers}
+    for d in dataloader_test:
+        # Extract features
+        assert(d['image'].shape[0] == 1) #the subsequent plotting code assumes a batch size of 1 for the image indexing
+        ft = feature_extractor(d['image'].to(device))
+        for layer in interested_layers:
+            # Flatten the features
+            activations[layer].append(ft[layer]) #if you're using this code as a feature extracture, you probably want to flatten the features
+    visualize_activations(activations, img_idx=0, save_path=os.path.join(save_root, "modelactivations_training-after"))
