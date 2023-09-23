@@ -9,6 +9,7 @@ venv/
 
 # Ignore some folders for this project
 resources/
+__pycache__/
 
 # Add more patterns as needed
 *.csv
