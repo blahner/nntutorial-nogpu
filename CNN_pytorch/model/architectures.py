@@ -38,8 +38,10 @@ class CNN_pytorch(nn.Module):
         )
 
         # fully connected layer, output 10 classes
-        self.fc1 = nn.Linear(32 * 7 * 7, 10)
-
+        self.fc = nn.Sequential(
+            nn.Linear(32 * 7 * 7, 10)
+        )
+        
         #now let's try a fancier way of initializing weights
         nn.init.kaiming_uniform_(self.CNN[0].weight,mode='fan_in', nonlinearity='relu')
         nn.init.kaiming_uniform_(self.CNN[3].weight,mode='fan_in', nonlinearity='relu')
@@ -62,7 +64,7 @@ class CNN_pytorch(nn.Module):
         """
         x = self.CNN(x)
         x = x.view(x.size(0), -1)       
-        output = self.fc1(x)
+        output = self.fc(x)
         return output, x    # return x for visualization
 
     def count_parameters(self):
