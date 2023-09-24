@@ -39,10 +39,11 @@ Download all external resources [here](https://drive.google.com/drive/folders/1O
 
 # Project Organization
 Move all the files and folders you downloaded into a root project directory of your choice. Organize the directories under your root project directory into this file structure:
-'''
-/path/to/your/project/
-├── CNN_pytorch
-│   ├── model
+
+
+  /path/to/your/project/
+  ├── CNN_pytorch
+  │   ├── model
 │   └── utils
 ├── MLP_numpy
 │   ├── model
@@ -59,7 +60,7 @@ Move all the files and folders you downloaded into a root project directory of y
     ├── numpy_code
     ├── PythonRefresher_MIT6.0001
     └── pytorch_code
-'''
+
 
 # What's next?
 After this tutorial, you will have an excellent understanding of the fundamentals of neural networks and are ready to try our more advanecd models (e.g., ResNet, transformers, mobilenets), larger datasets (e.g., CIFAR10, ImageNet, COCO), and other modalities (e.g., text, audio). [PyTorch](https://pytorch.org/tutorials/) has an awesome tutorials page and is a great place to start. Beyond this tutorial, however, GPUs and internet access will pretty much become necessary. For free GPUs, you can use [Google CoLab](https://colab.research.google.com/). 
