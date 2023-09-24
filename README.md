@@ -4,8 +4,7 @@ This self-paced tutorial aims to provide a comprehensive, one-stop resource for 
 2. the math behind forward and back propagation
 3. MNIST classification with a MLP in NumPy
 4. MNIST classification with a MLP in PyTorch
-5. MNIST classification with a CNN in PyTorch
-<br>
+5. MNIST classification with a CNN in PyTorch  
 Along the way, I provide offline PDF resources with more detailed and/or supplemental information.
 
 # Getting started
