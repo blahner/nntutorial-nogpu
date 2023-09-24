@@ -41,9 +41,10 @@ Download all external resources [here](https://drive.google.com/drive/folders/1O
 Move all the files and folders you downloaded into a root project directory of your choice. Organize the directories under your root project directory into this file structure:
 
 
-  /path/to/your/project/
-  ├── CNN_pytorch
-  │   ├── model
+/path/to/your/project/
+
+├── CNN_pytorch
+│   ├── model
 │   └── utils
 ├── MLP_numpy
 │   ├── model
