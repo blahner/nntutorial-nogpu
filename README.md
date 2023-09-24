@@ -16,8 +16,8 @@ After completing the following steps, you will be able to get working with no ne
 
 ## Step 01: Install Python and packages
 I will mention two ways to download Python. Python can installed either
-1. via Python's [website](\href{https://www.python.org/downloads/) or
-2. via Anaconda's [website](\href{https://www.anaconda.com/products/individual).
+1. via Python's [website](https://www.python.org/downloads/) or
+2. via Anaconda's [website](https://www.anaconda.com/products/individual).
 
 
 The difference between these two installations is that downloading Python from the Python website (option 1) only downloads Python and nothing else. Anaconda (option 2) downloads Python plus many other (useful) software, including a nice IDE (Spyder) to make it easier to write and debug code. So which Python installation method should you choose? Anaconda is a comprehensive data science platform that includes a lot of useful software for all things data science, so if you think you might want to continue learning about data science and/or machine learning, download Anaconda. Downloading Anaconda is my recommendation. Install Python from Python's website if computer storage is an issue (Anaconda will take up about 5GB on your computer because of all the extra software). DO NOT download both Anaconda and Python, as this will result in having two versions of Python on your computer and will be confusing. If you run into issues, the course materials for the [MIT 6.0001 course](https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/pages/syllabus/) 
@@ -39,7 +39,8 @@ Download all external resources [here](https://drive.google.com/drive/folders/1O
 
 # Project Organization
 Move all the files and folders you downloaded into a root project directory of your choice. Organize the directories under your root project directory into this file structure:
-.
+'''
+/path/to/your/project/
 ├── CNN_pytorch
 │   ├── model
 │   └── utils
@@ -58,6 +59,7 @@ Move all the files and folders you downloaded into a root project directory of y
     ├── numpy_code
     ├── PythonRefresher_MIT6.0001
     └── pytorch_code
+'''
 
 # What's next?
 After this tutorial, you will have an excellent understanding of the fundamentals of neural networks and are ready to try our more advanecd models (e.g., ResNet, transformers, mobilenets), larger datasets (e.g., CIFAR10, ImageNet, COCO), and other modalities (e.g., text, audio). [PyTorch](https://pytorch.org/tutorials/) has an awesome tutorials page and is a great place to start. Beyond this tutorial, however, GPUs and internet access will pretty much become necessary. For free GPUs, you can use [Google CoLab](https://colab.research.google.com/). 
