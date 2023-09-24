@@ -27,7 +27,7 @@ The difference between these two installations is that downloading Python from t
 Once Python is installed (either via Anaconda or Python's website), you will need to install the numpy, matplotlib, copy, os, and torch packages to Python. To do so, in your computer's command line type "pip install <package>" (without the quotes) for all packages, where <package> is either numpy, matplotlib, copy, os, or torch. To verify the packages installed correctly, open Python and in your console type "import <package>". If you see no errors, that means the packages installed correctly.
 
 ## Step 02: Download this GitHub project code and tutorial walkthrough
-Code download: Click on the green dropdown button that says "code" in the upper right corner and click "Download as .zip". This will download the tutorial code.
+Code download: Click on the green dropdown button that says "<> Code" in the upper right corner and click "Download Zip". This will download the tutorial code.
 
 Tutorial walkthrough: Click [here](TODO) to download the PDF walkthrough of the above code.
 
