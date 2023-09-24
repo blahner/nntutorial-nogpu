@@ -5,7 +5,7 @@ This self-paced tutorial aims to provide a comprehensive, one-stop resource for 
 3. MNIST classification with a MLP in NumPy
 4. MNIST classification with a MLP in PyTorch
 5. MNIST classification with a CNN in PyTorch
-Along the way, I provide offline PDF resources with more detailed and/or supplemental information.
+\ Along the way, I provide offline PDF resources with more detailed and/or supplemental information.
 
 # Getting started
 After completing the following steps, you will be able to get working with no need for anymore internet access or GPUs.
