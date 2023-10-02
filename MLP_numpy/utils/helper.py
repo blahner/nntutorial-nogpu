@@ -28,14 +28,17 @@ def factor(num):
             factors_list.append((x1, x2))
     return factors_list
 
-def plot_sample_imgs(dataset, save_path=None):
+def plot_sample_imgs(dataset, h=3, w=3, save_path=None):
     """
-    Plots sample images from a dataset for visualization purposes and saves the plots.
-    
+    Plots nxm sample images in a rectangle from a dataset for visualization purposes and saves the plots.
     Parameters:
     -----------
     dataset: "mnist_numpy_dataset" class object
         dataset object of the MNIST dataset
+    w: int, optional
+        number of images in a row (width)
+    h: int, optional
+        number of images in a column (height)
     save_path: string, optional
         Filepath, including filename, to where you want to save the resulting plot. If not
         specified, the plot will not save.
@@ -45,19 +48,19 @@ def plot_sample_imgs(dataset, save_path=None):
     None.
     """
     transform_inverse = InverseNormalize() #define an inverse normalize object. Since MNIST is grayscale, inverse normalizing doesn't make a big difference for visualizing. This is useful for natural images though
-    fig, ax = plt.subplots(3,3)
+    fig, ax = plt.subplots(w,h)
     fig.suptitle("Sample Images from Training Set")
-    for r in range(3):
-        for c in range(3):
-            idx = 3*r + c
+    for r in range(w):
+        for c in range(h):
+            idx = w*r + c
             sample = dataset.getitem(idx)
             img = sample["image"].reshape((28,28))
             label = sample["label"]
             
             ax[r,c].imshow(img, cmap="Greys")
             label, = np.where(label == 1)
-            ax[r,c].set_title("Label: " + str(label[0]))
-            ax[r,c].axis('on')
+            #ax[r,c].set_title("Label: " + str(label[0]))
+            ax[r,c].axis('off')
             ax[r,c].tick_params(left = False, right = False , labelleft = False ,
                 labelbottom = False, bottom = False)
     plt.tight_layout()
@@ -66,7 +69,7 @@ def plot_sample_imgs(dataset, save_path=None):
     plt.show()
     plt.clf()
 
-def visualize_weights(param, layer, save_path=None):
+def visualize_weights(param, layer, save_path=None, ext='.png'):
     """
     Visualize layer weights of the network in one plot. If the network is properly
     trained, we should be able to see some patterns in the weights.
@@ -80,6 +83,8 @@ def visualize_weights(param, layer, save_path=None):
     save_path: string, optional
         Filepath, including filename, to where you want to save the resulting plot. If not
         specified, the plot will not save.
+    ext: string, optional
+        filename extension. Only used if save_path is specified
 
     Returns
     -------
@@ -108,7 +113,7 @@ def visualize_weights(param, layer, save_path=None):
             ax[i,j].tick_params(left = False, right = False , labelleft = False ,
                 labelbottom = False, bottom = False)
     if save_path:
-        plt.savefig(save_path)
+        plt.savefig(os.path.join(save_path + "_layer-" + str(layer) + ext))
     plt.show()
     plt.clf()
 
