@@ -7,7 +7,7 @@ This self-paced tutorial provides a comprehensive, one-stop resource for underst
 5. MNIST classification with a CNN in PyTorch
 
 
-Along the way, I provide offline PDF resources with more detailed and/or supplemental information.
+Read this accompanying PDF (coming soon) to walk you through these five parts. Along the way, I provide additional offline PDF resources with more detailed and/or supplemental information.
 # Who is this tutorial for?
 This tutorial is for beginner programmers who want to understand neural networks. You should have a good working knowledge of python. An introductory python course (like [MIT's free 6.0001 course](https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/pages/syllabus/)) or similar would be perfect. You do not need any internet access after completing the following "Getting Started" steps, and your computer does not need any GPUs.
 
@@ -29,7 +29,7 @@ Once Python is installed (either via Anaconda or Python's website), you will nee
 ## Step 02: Download this GitHub project code and tutorial walkthrough
 Code download: Click on the green dropdown button that says "<> Code" in the upper right corner and click "Download ZIP". This will download the tutorial code.
 
-Tutorial walkthrough: Click [here](TODO) to download the PDF walkthrough of the above code.
+Tutorial walkthrough: Click [here](TODO) (coming soon) to download the PDF walkthrough of the above code.
 
 ## Step 03: Download the MNIST dataset
 This tutorial uses the MNIST dataset, a collection of handwritten digits from 0-9. Download the MNIST .csv files [here](https://drive.google.com/drive/folders/1prkKWdSNq_SK_q5Duj-hyh4Y0nvXrlcH?usp=drive_link). You can learn more about MNIST [here](http://yann.lecun.com/exdb/mnist/).
@@ -61,4 +61,4 @@ Move all the files and folders you downloaded into a root project directory of y
     └── pytorch_code
 ```
 # What's next?
-After this tutorial, you will have an excellent understanding of the fundamentals of neural networks and are ready to try our more advanecd models (e.g., ResNet, transformers, mobilenets), larger datasets (e.g., CIFAR10, ImageNet, COCO), and other modalities (e.g., text, audio). [PyTorch](https://pytorch.org/tutorials/) has an awesome tutorials page and is a great place to start. Beyond this tutorial, however, GPUs and internet access will pretty much become necessary. For free GPUs, you can use [Google CoLab](https://colab.research.google.com/). 
+After this tutorial, you will have an excellent understanding of the fundamentals of neural networks and are ready to try our more advanecd models (e.g., ResNet, transformers, mobilenets), larger datasets (e.g., CIFAR10, ImageNet, COCO), and other modalities (e.g., text, audio). PyTorch has an awesome [tutorials](https://pytorch.org/tutorials/) page and is a great place to start. Beyond this tutorial, however, GPUs and internet access will pretty much become necessary. For free GPU usage, you can use [Google CoLab](https://colab.research.google.com/). 
