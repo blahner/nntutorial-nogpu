@@ -8,7 +8,7 @@ This self-paced tutorial provides a comprehensive, one-stop resource for underst
 5. MNIST classification with a CNN in PyTorch
 
 
-Read this accompanying PDF (coming soon) to walk you through these five parts. Along the way, I provide additional offline PDF resources with more detailed and/or supplemental information.
+Read this accompanying [PDF](https://drive.google.com/file/d/1PEosEtq8lUNjH7l5gYIOhZ0I2XSGcvJv/view?usp=drive_link) to walk you through these five parts. Along the way, I provide additional offline PDF resources with more detailed and/or supplemental information.
 # Who is this tutorial for?
 This tutorial is for beginner programmers who want to understand neural networks. You should have a good working knowledge of python. An introductory python course (like [MIT's free 6.0001 course](https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/pages/syllabus/)) or similar would be perfect. You do not need any internet access after completing the following "Getting Started" steps, and your computer does not need any GPUs.
 
