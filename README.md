@@ -1,3 +1,4 @@
+![Welcome to the Fundamentals of Neural Networks tutorial page!](/images/fig_teaser.jpg)
 # Overview
 This self-paced tutorial provides a comprehensive, one-stop resource for understanding the fundamentals of neural networks without the need for GPUs or internet access.  This tutorial series is split into five parts:
 1. an overview of neural networks
