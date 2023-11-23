@@ -29,7 +29,7 @@ Once Python is installed (either via Anaconda or Python's website), you will nee
 ## Step 02: Download this GitHub project code and tutorial walkthrough
 Code download: Click on the green dropdown button that says "<> Code" in the upper right corner and click "Download ZIP". This will download the tutorial code.
 
-Tutorial walkthrough: Click [here](https://drive.google.com/file/d/1PEosEtq8lUNjH7l5gYIOhZ0I2XSGcvJv/view?usp=drive_link) (coming soon) to download the PDF walkthrough of the above code.
+Tutorial walkthrough: Click [here](https://drive.google.com/file/d/1PEosEtq8lUNjH7l5gYIOhZ0I2XSGcvJv/view?usp=drive_link) to download the PDF walkthrough of the above code.
 
 ## Step 03: Download the MNIST dataset
 This tutorial uses the MNIST dataset, a collection of handwritten digits from 0-9. Download the MNIST .csv files [here](https://drive.google.com/drive/folders/1prkKWdSNq_SK_q5Duj-hyh4Y0nvXrlcH?usp=drive_link). You can learn more about MNIST [here](http://yann.lecun.com/exdb/mnist/).
