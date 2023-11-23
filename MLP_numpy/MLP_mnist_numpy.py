@@ -169,7 +169,7 @@ if __name__ == '__main__':
     #########################
     #STEP 1: Load data into a dataset and visualize samples for a sanity check
     dataset_train_viz = mnist_numpy_dataset(data_root, phase='train', transforms=None) # a dataset with no transforms applied just so we can visualize the raw images
-    plot_sample_imgs(dataset_train_viz, save_path=os.path.join(save_root, "training_samples.png"))
+    plot_sample_imgs(dataset_train_viz, h=9, w=16, save_path=os.path.join(save_root, "training_samples.png"))
 
     transform = [Normalize()] #normalizing the images helps with training
     dataset_train = mnist_numpy_dataset(data_root, phase='train', transforms=transform)
@@ -206,7 +206,7 @@ if __name__ == '__main__':
     #The model weights and activations should have no obvious structure
     print("Model Performance Before Training")
     inference_loss, inference_acc, activations = inference(model, dataloader_test, criterion) #pass the testing set through the network
-    visualize_weights(model.get_parameters(), 1, save_path= os.path.join(save_root,"modelweights_training-before.png")) #Do you see any structure in these weights?
+    visualize_weights(model.get_parameters(), 2, save_path= os.path.join(save_root,"modelweights_training-before"), ext='.svg') #Do you see any structure in these weights?
     visualize_activations(activations, layers=list(range(len(layer_sz))), 
                     image_idx=0, save_path=os.path.join(save_root,"modelactivations_training-before"))
 
@@ -238,7 +238,7 @@ if __name__ == '__main__':
     
     print("Model Performance After Training")
     inference_loss, inference_acc, activations = inference(model, dataloader_test, criterion) #pass the testing set through the network
-    visualize_weights(model.get_parameters(), 1, save_path=os.path.join(save_root, "modelweights_training-after")) #Do you see any structure in these weights?
+    visualize_weights(model.get_parameters(), 1, save_path=os.path.join(save_root, "modelweights_training-after"), ext=".svg") #Do you see any structure in these weights?
     visualize_activations(activations, layers=list(range(len(layer_sz))), 
                     image_idx=0, save_path=os.path.join(save_root, "modelactivations_training-after"))
 
